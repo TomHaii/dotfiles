@@ -234,6 +234,14 @@ require("lazy").setup({
 		branch = "harpoon2",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
+	{
+		"olimorris/codecompanion.nvim",
+		opts = {},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+	},
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
 	-- keys can be used to configure plugin behavior/loading/etc.
@@ -266,6 +274,14 @@ require("lazy").setup({
 				topdelete = { text = "‾" },
 				changedelete = { text = "~" },
 			},
+		},
+	},
+	{
+		"olimorris/codecompanion.nvim",
+		opts = {},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
 		},
 	},
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
@@ -901,7 +917,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-
 	{ -- You can easily change to a different colorscheme.
 		-- Change the name of the colorscheme plugin below, and then
 		-- change the command in the config to whatever the name of that colorscheme is.
@@ -916,15 +931,13 @@ require("lazy").setup({
 					comments = { italic = false }, -- Disable italics in comments
 				},
 			})
-
-			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
 			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("retrobox")
 		end,
 	},
-
+	{ "ellisonleao/gruvbox.nvim", priority = 1000, config = true },
 	-- Highlight todo, notes, etc in comments
+	{ "srcery-colors/srcery-vim", priority = 1000 },
 	{
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
@@ -1089,5 +1102,31 @@ end)
 vim.keymap.set("n", "<C-S-N>", function()
 	harpoon:list():next()
 end)
+
+-- CodeCompanion setup
+require("codecompanion").setup({
+	strategies = {
+		chat = {
+			adapter = "openai",
+		},
+		inline = {
+			adapter = "openai",
+		},
+		cmd = {
+			adapter = "openai",
+		},
+	},
+	adapters = {
+		openai = function()
+			return require("codecompanion.adapters").extend("openai", {
+				env = {
+					api_key = "cmd:cat ~/OpenAI/credential",
+				},
+			})
+		end,
+	},
+})
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+-- [[ Default Colorscheme ]]
+vim.cmd.colorscheme("srcery")
