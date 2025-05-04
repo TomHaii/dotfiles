@@ -1,3 +1,3 @@
-NVIM dotfiles
+My NVIM Dotfiles
 
-3/9/2025 - init
+I usually use the font 3270 Nerd Font Propo
